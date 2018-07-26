@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:dev</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:admin</permission>
+      <permission>hudson.model.Run.Delete:dev</permission>
+      <permission>hudson.model.Run.Delete:admin</permission>
+      <permission>hudson.model.Item.Workspace:dev</permission>
+      <permission>hudson.model.Item.Workspace:admin</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:dev</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:admin</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.ManageDomains:dev</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.ManageDomains:admin</permission>
+      <permission>hudson.model.Item.Configure:dev</permission>
+      <permission>hudson.model.Item.Configure:admin</permission>
+      <permission>hudson.model.Item.Cancel:dev</permission>
+      <permission>hudson.model.Item.Cancel:admin</permission>
+      <permission>hudson.model.Item.Delete:dev</permission>
+      <permission>hudson.model.Item.Delete:admin</permission>
+      <permission>hudson.model.Item.Read:dev</permission>
+      <permission>hudson.model.Item.Read:admin</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.View:dev</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.View:admin</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:dev</permission>
+      <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:admin</permission>
+      <permission>hudson.model.Item.Build:dev</permission>
+      <permission>hudson.model.Item.Build:admin</permission>
+      <permission>hudson.scm.SCM.Tag:dev</permission>
+      <permission>hudson.scm.SCM.Tag:admin</permission>
+      <permission>hudson.model.Item.Discover:dev</permission>
+      <permission>hudson.model.Item.Discover:admin</permission>
+      <permission>hudson.model.Run.Update:dev</permission>
+      <permission>hudson.model.Run.Update:admin</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>2</daysToKeep>
+        <numToKeep>10</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+  </properties>
+  <scm class="org.jenkinsci.plugins.multiplescms.MultiSCM" plugin="multiple-scms@0.6">
+    <scms>
+      <hudson.plugins.git.GitSCM plugin="git@3.5.1">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>git@bitbucket.org:wwtchina/qin.core.git</url>
+            <credentialsId>6b5c6036-a1cb-4264-bcbc-21e9d1e91189</credentialsId>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>feature/QINR-2187-Extension-Order-Item-Problem</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>qin.core</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+      <hudson.plugins.git.GitSCM plugin="git@3.5.1">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>git@bitbucket.org:wwtchina/qin.backoffice.git</url>
+            <credentialsId>6b5c6036-a1cb-4264-bcbc-21e9d1e91189</credentialsId>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>feature/QINR-2187-Extension-Order-Item-Problem</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>qin.backoffice</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+      <hudson.plugins.git.GitSCM plugin="git@3.5.1">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>git@bitbucket.org:wwtchina/qin.flightservice.git</url>
+            <credentialsId>6b5c6036-a1cb-4264-bcbc-21e9d1e91189</credentialsId>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>*/staging</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>qin.flightservice</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+      <hudson.plugins.git.GitSCM plugin="git@3.5.1">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>git@bitbucket.org:wwtchina/qin.b2c.git</url>
+            <credentialsId>6b5c6036-a1cb-4264-bcbc-21e9d1e91189</credentialsId>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>*/master</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>qin.b2c</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+      <hudson.plugins.git.GitSCM plugin="git@3.5.1">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>git@bitbucket.org:wwtchina/qin.b2c.git</url>
+            <credentialsId>6b5c6036-a1cb-4264-bcbc-21e9d1e91189</credentialsId>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>*/master</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>qin.b2b</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+      <hudson.plugins.git.GitSCM plugin="git@3.5.1">
+        <configVersion>2</configVersion>
+        <userRemoteConfigs>
+          <hudson.plugins.git.UserRemoteConfig>
+            <url>git@bitbucket.org:wwtchina/qin.supplierportal.git</url>
+            <credentialsId>6b5c6036-a1cb-4264-bcbc-21e9d1e91189</credentialsId>
+          </hudson.plugins.git.UserRemoteConfig>
+        </userRemoteConfigs>
+        <branches>
+          <hudson.plugins.git.BranchSpec>
+            <name>*/master</name>
+          </hudson.plugins.git.BranchSpec>
+        </branches>
+        <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+        <submoduleCfg class="list"/>
+        <extensions>
+          <hudson.plugins.git.extensions.impl.CleanBeforeCheckout/>
+          <hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+            <relativeTargetDir>qin.supplierportal</relativeTargetDir>
+          </hudson.plugins.git.extensions.impl.RelativeTargetDirectory>
+        </extensions>
+      </hudson.plugins.git.GitSCM>
+    </scms>
+  </scm>
+  <assignedNode>test05</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.BatchFile>
+      <command>nuget restore qin.core\Qin.sln -Source &quot;https://api.nuget.org/v3/index.json;https://www.myget.org/F/wendywutours/api/v3/index.json;https://www.myget.org/F/wendywutours-beta/api/v3/index.json&quot;&#xd;
+&#xd;
+nuget restore qin.backoffice\Qin.BackOffice.sln -Source &quot;https://api.nuget.org/v3/index.json;https://www.myget.org/F/wendywutours/api/v3/index.json;https://www.myget.org/F/wendywutours-beta/api/v3/index.json&quot;&#xd;
+&#xd;
+nuget restore qin.flightservice\Qin.Flight.sln -Source &quot;https://api.nuget.org/v3/index.json;https://www.myget.org/F/wendywutours/api/v3/index.json;https://www.myget.org/F/wendywutours-beta/api/v3/index.json&quot;&#xd;
+&#xd;
+nuget restore qin.b2c\Qin.Tour.B2C.Web.sln -Source &quot;https://api.nuget.org/v3/index.json;https://www.myget.org/F/wendywutours/api/v3/index.json;https://www.myget.org/F/wendywutours-beta/api/v3/index.json&quot;&#xd;
+&#xd;
+nuget restore qin.b2b\Qin.Tour.B2B.Web.sln -Source &quot;https://api.nuget.org/v3/index.json;https://www.myget.org/F/wendywutours/api/v3/index.json;https://www.myget.org/F/wendywutours-beta/api/v3/index.json&quot;&#xd;
+&#xd;
+nuget restore qin.supplierportal\Qin.SupplierPortal.sln -Source &quot;https://api.nuget.org/v3/index.json;https://www.myget.org/F/wendywutours/api/v3/index.json;https://www.myget.org/F/wendywutours-beta/api/v3/index.json&quot;</command>
+    </hudson.tasks.BatchFile>
+    <hudson.plugins.powershell.PowerShell plugin="powershell@1.3">
+      <command>rm -r &apos;C:\wwt\pubsite\&apos;</command>
+    </hudson.plugins.powershell.PowerShell>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild@1.27">
+      <msBuildName>windows-msbuild-2017-rc</msBuildName>
+      <msBuildFile>qin.core\Qin.sln</msBuildFile>
+      <cmdLineArgs>/p:DeployOnBuild=true /p:PublishProfile=Staging.pubxml /p:Configuration=Staging</cmdLineArgs>
+      <buildVariablesAsProperties>false</buildVariablesAsProperties>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.msbuild.MsBuildBuilder>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild@1.27">
+      <msBuildName>windows-msbuild-2017-rc</msBuildName>
+      <msBuildFile>qin.backoffice\Qin.BackOffice.sln</msBuildFile>
+      <cmdLineArgs>/p:DeployOnBuild=true /p:PublishProfile=Staging.pubxml /p:Configuration=Staging</cmdLineArgs>
+      <buildVariablesAsProperties>false</buildVariablesAsProperties>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.msbuild.MsBuildBuilder>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild@1.27">
+      <msBuildName>windows-msbuild-2017-rc</msBuildName>
+      <msBuildFile>qin.flightservice\Qin.Flight.sln</msBuildFile>
+      <cmdLineArgs>/p:DeployOnBuild=true /p:PublishProfile=Staging.pubxml /p:Configuration=Staging</cmdLineArgs>
+      <buildVariablesAsProperties>false</buildVariablesAsProperties>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.msbuild.MsBuildBuilder>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild@1.27">
+      <msBuildName>windows-msbuild-2017-rc</msBuildName>
+      <msBuildFile>qin.b2c\Qin.Tour.B2C.Web.sln</msBuildFile>
+      <cmdLineArgs>/p:DeployOnBuild=true /p:PublishProfile=Staging.pubxml /p:Configuration=Staging</cmdLineArgs>
+      <buildVariablesAsProperties>false</buildVariablesAsProperties>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.msbuild.MsBuildBuilder>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild@1.27">
+      <msBuildName>windows-msbuild-2017-rc</msBuildName>
+      <msBuildFile>qin.b2b\Qin.Tour.B2B.Web.sln</msBuildFile>
+      <cmdLineArgs>/p:DeployOnBuild=true /p:PublishProfile=Staging.pubxml /p:Configuration=Staging</cmdLineArgs>
+      <buildVariablesAsProperties>false</buildVariablesAsProperties>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.msbuild.MsBuildBuilder>
+    <hudson.plugins.msbuild.MsBuildBuilder plugin="msbuild@1.27">
+      <msBuildName>windows-msbuild-2017-rc</msBuildName>
+      <msBuildFile>qin.supplierportal\Qin.SupplierPortal.sln</msBuildFile>
+      <cmdLineArgs>/p:DeployOnBuild=true /p:PublishProfile=Staging.pubxml /p:Configuration=Staging</cmdLineArgs>
+      <buildVariablesAsProperties>false</buildVariablesAsProperties>
+      <continueOnBuildFailure>false</continueOnBuildFailure>
+      <unstableIfWarnings>false</unstableIfWarnings>
+    </hudson.plugins.msbuild.MsBuildBuilder>
+    <hudson.tasks.BatchFile>
+      <command>qin.backoffice\packages\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe qin.backoffice\Qin.BackOffice.Web.Test\bin\Staging\Qin.BackOffice.Web.Test.dll --work=qin.backoffice --result=Test-All-Result.xml --workers=1 --process=Single</command>
+    </hudson.tasks.BatchFile>
+  </builders>
+  <publishers>
+    <hudson.plugins.nunit.NUnitPublisher plugin="nunit@0.21">
+      <testResultsPattern>qin.backoffice/Test-*-Result.xml</testResultsPattern>
+      <debug>false</debug>
+      <keepJUnitReports>false</keepJUnitReports>
+      <skipJUnitArchiver>false</skipJUnitArchiver>
+      <failIfNoResults>true</failIfNoResults>
+    </hudson.plugins.nunit.NUnitPublisher>
+  </publishers>
+  <buildWrappers/>
+</project>
