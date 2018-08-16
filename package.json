@@ -1,0 +1,11 @@
+{
+  "name": "easy-text-match",
+  "version": "0.1.0",
+  "main": "easy-text-match.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "li hui",
+  "license": "ISC",
+  "description": ""
+}
