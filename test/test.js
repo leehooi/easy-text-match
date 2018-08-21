@@ -4,24 +4,26 @@ var assert = require('assert');
 
 var text = fs.readFileSync('./test/config.xml', "utf-8");
 
-describe('#between() ', function() {
-    it('result should be an array when matched more than once', function() {
+describe('#between() ', function () {
+    it('result should be an array when matched more than once', function () {
         var result = match(text)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>');
         assert.equal(result.length, 6);
     });
 });
 
-describe('#between()', function() {
-    it('result should have the properties of the first element in array', function() {
+describe('#between()', function () {
+    it('result should have the properties of the first element in array', function () {
         var result = match(text)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>');
         assert.equal(result.innerText, result[0].innerText);
+        assert.equal(result.origin, text);
+        assert.equal(result.origin, result[0].origin);
     });
 });
 
-describe('#between() ', function() {
-    it('result should have the same method to match for all element', function() {
+describe('#between() ', function () {
+    it('result should have the same method to match for all element', function () {
         var result = match(text)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('<name>', '</name>');
@@ -29,8 +31,8 @@ describe('#between() ', function() {
     });
 });
 
-describe('#between() ', function() {
-    it('result should have the same method to match for all element', function() {
+describe('#between() ', function () {
+    it('result should have the same method to match for all element', function () {
         var result = match(text)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('<name>', '</name>')
@@ -38,8 +40,8 @@ describe('#between() ', function() {
     });
 });
 
-describe('#replaceWith() ', function() {
-    it('should return the replaced text', function() {
+describe('#replaceWith() ', function () {
+    it('should return the replaced text', function () {
         var newText = match(text)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('qin.supplierportal')
