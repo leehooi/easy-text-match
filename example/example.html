@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <script src="../dist/easy-text-match.js">
+    </script>
+    <script>
+        function executeMatch() {
+            var inputText = document.getElementById('textSample').value;
+            var beginWith = document.getElementById('inputBegin').value;
+            var endWith = document.getElementById('inputEnd').value;
+            document.getElementById('output').innerText = easyTextMatch(inputText)
+                .between(beginWith, endWith)
+                .map(function (item) {
+                    return item.innerText;
+                }).join('\n');
+        }
+    </script>
+</head>
+
+<body class="container">
+    <div class="form-group">
+        <div class="form-group">
+            <label for="textSample">Text sample</label>
+            <textarea class="form-control" id="textSample" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="inputBegin">Begin with</label>
+            <input type="text" class="form-control" id="inputBegin">
+        </div>
+        <div class="form-group">
+            <label for="inputEnd">End with</label>
+            <input type="text" class="form-control" id="inputEnd">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" onclick="executeMatch()">Execute match</button>
+        </div>
+        <div class="form-group">
+            <label>Result:</label>
+            <pre><samp id="output"></samp></pre>
+        </div>
+    </div>
+</body>
+
+</html>

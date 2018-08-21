@@ -1,5 +1,5 @@
 var fs = require("fs")
-var match = require('../easy-text-match')
+var match = require('../dist/easy-text-match')
 var assert = require('assert');
 
 var text = fs.readFileSync('./test/config.xml', "utf-8");
