@@ -4,10 +4,10 @@ function createTextRange(text, beginPos, endPos) {
         beginPos: beginPos,
         endPos: endPos,
         innerText: text.slice(beginPos, endPos),
-        between: function (beginText, endText) {
+        between(beginText, endText) {
             return matchBetween(this, beginText, endText)
         },
-        replaceWith: function (newText) {
+        replaceWith(newText) {
             return this.origin.substring(0, this.beginPos) + newText + this.origin.substr(this.endPos);
         }
     };
@@ -46,25 +46,25 @@ function extendArray(array, origin) {
     array.beginPos = first ? first.beginPos : 0;
     array.endPos = first ? first.endPos : (origin.length - 1);
     array.innerText = first ? first.innerText : origin;
-    array.between = function (beginText, endText) {
+    array.between = (beginText, endText) => {
         var objArray = [];
-        this.forEach(obj => {
+        array.forEach(obj => {
             objArray = objArray.concat(matchBetween(obj, beginText, endText))
         });
         extendArray(objArray, origin);
         return objArray;
     }
 
-    array.replaceWith = function (newText) {
+    array.replaceWith = (newText) => {
         if (first) {
             return first.replaceWith(newText);
         }
         else {
-            return this.origin;
+            return array.origin;
         }
     }
 }
 
-module.exports = function (text) {
+module.exports = (text) => {
     return createTextRange(text, 0, text.length - 1);
 }

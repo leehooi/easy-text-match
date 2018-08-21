@@ -9,5 +9,14 @@ module.exports = {
     library: 'easyTextMatch',
     libraryTarget: 'umd',
     globalObject: 'this'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      }
+    ]
   }
 };
