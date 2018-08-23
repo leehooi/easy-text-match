@@ -75,8 +75,8 @@ module.exports = (text) => {
 
     result.between = function (beginText, endText) {
         var rangeArray = [];
-        this.forEach(obj => {
-            executeMatch(text, obj.left(), obj.right(), beginText, endText,
+        this.forEach(range => {
+            executeMatch(text, range.left(), range.right(), beginText, endText,
                 (left, right, padLeft, padRight) =>
                     rangeArray.push(createRange(left, right, padLeft, padRight, findBetween, replaceBetween))
             );
@@ -85,6 +85,12 @@ module.exports = (text) => {
         fillResult(this, rangeArray, emptyRange);
         return this;
     }
+
+    result.filter = function(callback, thisValue) {
+        var rangeArray = Array.prototype.filter.call(this, callback, thisValue);
+        fillResult(this, rangeArray, emptyRange);
+        return this;
+    };
 
     result.success = function () {
         return this.length > 0;

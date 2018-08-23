@@ -21,6 +21,18 @@ describe('#between()', function () {
     });
 });
 
+describe('#filter()', function () {
+    it('should return an filtered array of matched items', function () {
+        var result = easyTextMatch(sampleText)
+            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
+            .filter(i => i.innerText().indexOf('qin.backoffice.git') >= 0)
+            .between('<name>', '</name>');
+        assert.equal(result.success(), true);
+        assert.equal(result.length, 1);
+        assert.equal(result.innerText(), 'feature/QINR-2187-Extension-Order-Item-Problem');
+    });
+});
+
 describe('#innerText() & #outerText()', function () {
     it('should return correct innerText and outerText', function () {
         var result = easyTextMatch(sampleText)
