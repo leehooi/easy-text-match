@@ -7,7 +7,7 @@
     "build": "webpack"
   },
   "author": "li hui",
-  "license": "ISC",
+  "license": "MIT",
   "description": "",
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -17,5 +17,25 @@
     "mocha": "^5.2.0",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0"
-  }
+  },
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leehooi/easy-text-match.git"
+  },
+  "bugs": {
+    "url": "https://github.com/leehooi/easy-text-match/issues"
+  },
+  "homepage": "https://github.com/leehooi/easy-text-match#readme"
 }
