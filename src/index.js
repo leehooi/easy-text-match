@@ -1,25 +1,15 @@
-function createRange(left, right, padLeft, padRight, getTextBetween, replaceTextBetween) {
+function createRange(left, right, padLeft, padRight, findBetween, replaceBetween) {
     return {
-        left: left,
-        right: right,
-        padLeft: padLeft,
-        padRight: padRight,
-        innerText() {
-            return getTextBetween(this.left + this.padLeft, this.right - this.padRight);
-        },
-        outerText() {
-            return getTextBetween(this.left, this.right);
-        },
-        replaceInnerTextWith(newText) {
-            return replaceTextBetween(this.left + this.padLeft, this.right - this.padRight, newText)
-        },
-        replaceOuterTextWith(newText) {
-            return replaceTextBetween(this.left, this.right, newText)
-        }
+        left: () => left,
+        right: () => right,
+        innerText: () => findBetween(left + padLeft, right - padRight),
+        outerText: () => findBetween(left, right),
+        replaceInnerTextWith: (newText) => replaceBetween(left + padLeft, right - padRight, newText),
+        replaceOuterTextWith: (newText) => replaceBetween(left, right, newText)
     };
 }
 
-function executeMatch(text, beginPos, endPos, beginText, endText, handleMatched) {
+function executeMatch(text, beginPos, endPos, beginText, endText, matchHandler) {
     var index = beginPos;
 
     while (index < endPos) {
@@ -42,8 +32,8 @@ function executeMatch(text, beginPos, endPos, beginText, endText, handleMatched)
             right += endText.length;
             padRight = endText.length;
         }
-        if (handleMatched) {
-            if (!handleMatched(left, right, padLeft, padRight)) {
+        if (matchHandler) {
+            if (!matchHandler(left, right, padLeft, padRight)) {
                 break;
             }
         }
@@ -51,54 +41,54 @@ function executeMatch(text, beginPos, endPos, beginText, endText, handleMatched)
     }
 }
 
-function fillResult(result, array, failedElement) {
+function fillResult(result, rangeArray, emptyRange) {
     //clear elements
     result.splice(0, result.length);
 
     //reload elements
-    array.forEach(element => {
+    rangeArray.forEach(element => {
         result.push(element);
     });
 
     //update properties
-    result.success = array.length > 0;
-    var obj = array[0] || failedElement;
-    result.left = obj.left;
-    result.right = obj.right;
-    result.padLeft = obj.padLeft;
-    result.padRight = obj.padRight;
-    result.innerText = () => obj.innerText();
-    result.outerText = () => obj.outerText();
-    result.replaceInnerTextWith = (newText) => obj.replaceInnerTextWith(newText);
-    result.replaceOuterTextWith = (newText) => obj.replaceOuterTextWith(newText);
+    var range = rangeArray[0] || emptyRange;
+    result.left = () => range.left();
+    result.right = () => range.right();
+    result.innerText = () => range.innerText();
+    result.outerText = () => range.outerText();
+    result.replaceInnerTextWith = (newText) => range.replaceInnerTextWith(newText);
+    result.replaceOuterTextWith = (newText) => range.replaceOuterTextWith(newText);
 }
 
 module.exports = (text) => {
-    var getTextBetween = (left, right) => {
-        return text.slice(left, right);
-    };
-    var replaceTextBetween = (left, right, newText) => {
-        return text.substring(0, left) + newText + text.substr(right);
-    };
+    var findBetween = (left, right) => text.slice(left, right);
 
-    var failedElement = createRange(0, text.length - 1, 0, 0, () => text, () => text);
+    var replaceBetween = (left, right, newText) => text.substring(0, left) + newText + text.substr(right);
+
+    var initialRange = createRange(0, text.length - 1, 0, 0, findBetween, replaceBetween);
+
+    var emptyRange = createRange(-1, -1, 0, 0, () => '', () => text);
 
     var result = [];
+
+    fillResult(result, [initialRange], emptyRange);
+
     result.between = function (beginText, endText) {
-        var objArray = [];
+        var rangeArray = [];
         this.forEach(obj => {
-            executeMatch(text, obj.left, obj.right, beginText, endText,
-                (left, right, padLeft, padRight) => {
-                    objArray.push(createRange(left, right, padLeft, padRight, getTextBetween, replaceTextBetween));
-                    return true;
-                }
+            executeMatch(text, obj.left(), obj.right(), beginText, endText,
+                (left, right, padLeft, padRight) =>
+                    rangeArray.push(createRange(left, right, padLeft, padRight, findBetween, replaceBetween))
             );
         });
 
-        fillResult(this, objArray, failedElement);
+        fillResult(this, rangeArray, emptyRange);
         return this;
     }
 
-    fillResult(result, [createRange(0, text.length - 1, 0, 0, getTextBetween, replaceTextBetween)], failedElement);
+    result.success = function () {
+        return this.length > 0;
+    };
+
     return result;
 }
