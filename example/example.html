@@ -11,11 +11,16 @@
             var inputText = document.getElementById('textSample').value;
             var beginWith = document.getElementById('inputBegin').value;
             var endWith = document.getElementById('inputEnd').value;
-            document.getElementById('output').innerText = easyTextMatch(inputText)
-                .between(beginWith, endWith)
-                .map(function (item) {
-                    return item.innerText;
+            var result = easyTextMatch(inputText)
+                .between(beginWith, endWith);
+            var output = '';
+            output += 'match count: ' + result.length + '\n';
+            output += '\n';
+            output += result .map(function (item) {
+                    return item.outerText();
                 }).join('\n');
+
+            document.getElementById('output').innerText = output;
         }
     </script>
 </head>
@@ -24,7 +29,7 @@
     <div class="form-group">
         <div class="form-group">
             <label for="textSample">Text sample</label>
-            <textarea class="form-control" id="textSample" rows="4"></textarea>
+            <textarea class="form-control" id="textSample" rows="5"></textarea>
         </div>
         <div class="form-group">
             <label for="inputBegin">Begin with</label>
@@ -39,7 +44,7 @@
         </div>
         <div class="form-group">
             <label>Result:</label>
-            <pre><samp id="output"></samp></pre>
+            <pre class="border p-4"><samp id="output"></samp></pre>
         </div>
     </div>
 </body>

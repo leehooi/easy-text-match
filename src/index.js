@@ -1,87 +1,104 @@
-function createTextRange(text, left, right, padLeft, padRight) {
-    var textRange = {};
-    textRange.originText = text;
-    textRange.left = left;
-    textRange.right = right;
-    textRange.padLeft = padLeft;
-    textRange.padRight = padRight;
-    textRange.innerText = text.slice(left + padLeft, right - padRight);
-    textRange.outerText = text.slice(left, right);
-    return textRange;
+function createRange(left, right, padLeft, padRight, getTextBetween, replaceTextBetween) {
+    return {
+        left: left,
+        right: right,
+        padLeft: padLeft,
+        padRight: padRight,
+        innerText() {
+            return getTextBetween(this.left + this.padLeft, this.right - this.padRight);
+        },
+        outerText() {
+            return getTextBetween(this.left, this.right);
+        },
+        replaceInnerTextWith(newText) {
+            return replaceTextBetween(this.left + this.padLeft, this.right - this.padRight, newText)
+        },
+        replaceOuterTextWith(newText) {
+            return replaceTextBetween(this.left, this.right, newText)
+        }
+    };
 }
 
-function matchBetween(obj, beginText, endText) {
-    var objArray = [];
-    var index = obj.left;
+function executeMatch(text, beginPos, endPos, beginText, endText, handleMatched) {
+    var index = beginPos;
 
-    while (index < obj.right) {
+    while (index < endPos) {
         var left = index;
         var padLeft = 0;
         if (beginText) {
-            left = obj.originText.indexOf(beginText, index);
+            left = text.indexOf(beginText, index);
             if (left == -1) {
                 break;
             }
             padLeft = beginText.length;
         }
-        var right = obj.right;
+        var right = endPos;
         var padRight = 0;
         if (endText) {
-            right = obj.originText.indexOf(endText, left);
-            if (right == -1 || right > obj.right) {
+            right = text.indexOf(endText, left + padLeft);
+            if (right == -1 || right > endPos) {
                 break;
             }
             right += endText.length;
             padRight = endText.length;
         }
-        objArray.push(createTextRange(obj.originText, left, right, padLeft, padRight));
+        if (handleMatched) {
+            if (!handleMatched(left, right, padLeft, padRight)) {
+                break;
+            }
+        }
         index = right;
     }
-    return objArray;
 }
 
-function extendArray(array, originText) {
-    var obj = array[0] || {
-        originText: originText,
-        left: 0,
-        right: originText.length - 1,
-        padLeft: 0,
-        padRight: 0,
-        innerText: originText,
-        outerText: originText
-    };
+function fillResult(result, array, failedElement) {
+    //clear elements
+    result.splice(0, result.length);
 
-    array.originText = obj.originText;
-    array.left = obj.left;
-    array.right = obj.right;
-    array.padLeft = obj.padLeft;
-    array.padRight = obj.padRight;
-    array.innerText = obj.innerText;
-    array.outerText = obj.outerText;
+    //reload elements
+    array.forEach(element => {
+        result.push(element);
+    });
+
+    //update properties
+    result.success = array.length > 0;
+    var obj = array[0] || failedElement;
+    result.left = obj.left;
+    result.right = obj.right;
+    result.padLeft = obj.padLeft;
+    result.padRight = obj.padRight;
+    result.innerText = () => obj.innerText();
+    result.outerText = () => obj.outerText();
+    result.replaceInnerTextWith = (newText) => obj.replaceInnerTextWith(newText);
+    result.replaceOuterTextWith = (newText) => obj.replaceOuterTextWith(newText);
 }
 
 module.exports = (text) => {
-    var result = [];
-    result.push(createTextRange(text, 0, text.length - 1, 0, 0));
-    extendArray(result, text);
-    
-    result.replaceInnerTextWith = function (newText) {
-        return this.originText.substring(0, this.left + this.padLeft) + newText + this.originText.substr(this.right - this.padRight);
+    var getTextBetween = (left, right) => {
+        return text.slice(left, right);
     };
-    result.replaceOuterTextWith = function (newText) {
-        return this.originText.substring(0, this.left) + newText + this.originText.substr(this.right);
-    }
+    var replaceTextBetween = (left, right, newText) => {
+        return text.substring(0, left) + newText + text.substr(right);
+    };
+
+    var failedElement = createRange(0, text.length - 1, 0, 0, () => text, () => text);
+
+    var result = [];
     result.between = function (beginText, endText) {
         var objArray = [];
         this.forEach(obj => {
-            objArray = objArray.concat(matchBetween(obj, beginText, endText))
+            executeMatch(text, obj.left, obj.right, beginText, endText,
+                (left, right, padLeft, padRight) => {
+                    objArray.push(createRange(left, right, padLeft, padRight, getTextBetween, replaceTextBetween));
+                    return true;
+                }
+            );
         });
-        this.splice(0, this.length);
-        objArray.forEach(obj => {
-            this.push(obj);
-        });
-        extendArray(this, text);
+
+        fillResult(this, objArray, failedElement);
         return this;
     }
+
+    fillResult(result, [createRange(0, text.length - 1, 0, 0, getTextBetween, replaceTextBetween)], failedElement);
     return result;
 }

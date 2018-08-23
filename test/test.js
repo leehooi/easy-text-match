@@ -1,72 +1,99 @@
 var fs = require("fs")
-var match = require('../dist/easy-text-match')
+var easyTextMatch = require('../dist/easy-text-match')
 var assert = require('assert');
 
-var text = fs.readFileSync('./test/config.xml', "utf-8");
+var sampleText = fs.readFileSync('./test/config.xml', "utf-8");
 
-describe('#between() ', function () {
-    it('result should be an array of matched result', function () {
-        var result = match(text)
+describe('#between()', function () {
+    it('should return an array of matched items', function () {
+        var result = easyTextMatch(sampleText)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>');
+        assert.equal(result.success, true);
         assert.equal(result.length, 6);
     });
-    
-    it('result should have correct innerText and outerText', function () {
-        var result = match(text)
-            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
-            .between('qin.backoffice.git')
-            .between('<name>', '</name>')
-        assert.equal(result.innerText, 'feature/QINR-2187-Extension-Order-Item-Problem');
-        assert.equal(result.outerText, '<name>feature/QINR-2187-Extension-Order-Item-Problem</name>');
-    });
 
-    it('result should have the same field and value of the first element in array', function () {
-        var result = match(text)
-            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>');
-        assert.equal(result.innerText, result[0].innerText);
-        assert.equal(result.outerText, result[0].outerText);
-        assert.equal(result.originText, result[0].originText);
-        assert.equal(result.originText, text);
-    });
-    
-    it('result should have the method "between" to match for all element', function () {
-        var result = match(text)
+    it('should support chain method', function () {
+        var result = easyTextMatch(sampleText)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('<name>', '</name>');
+        assert.equal(result.success, true);
         assert.equal(result.length, 6);
     });
 });
 
+describe('#innerText() & #outerText()', function () {
+    it('should return correct innerText and outerText', function () {
+        var result = easyTextMatch(sampleText)
+            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
+            .between('qin.backoffice.git')
+            .between('<name>', '</name>')
+        assert.equal(result.success, true);
+        assert.equal(result.innerText(), 'feature/QINR-2187-Extension-Order-Item-Problem');
+        assert.equal(result.outerText(), '<name>feature/QINR-2187-Extension-Order-Item-Problem</name>');
+    });
 
-describe('#replaceInnerTextWith() ', function () {
+    it('should return the same value with the first element in array', function () {
+        var result = easyTextMatch(sampleText)
+            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>');
+        assert.equal(result.success, true);
+        assert.equal(result.innerText(), result[0].innerText());
+        assert.equal(result.outerText(), result[0].outerText());
+    });
+});
+
+describe('#replaceInnerTextWith()', function () {
     it('should replace inner text with specified text', function () {
-        var newText = match(text)
+        var newText = easyTextMatch(sampleText)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('qin.supplierportal')
             .between('<name>', '</name>')
             .replaceInnerTextWith('feature/QINR-2067-Price-Breakdown-for-Extensions');
-        var result = match(newText)
+        var result = easyTextMatch(newText)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('qin.supplierportal')
             .between('<name>', '</name>');
-        assert.equal(result.innerText, 'feature/QINR-2067-Price-Breakdown-for-Extensions');
-        assert.equal(result.outerText, '<name>feature/QINR-2067-Price-Breakdown-for-Extensions</name>');
+        assert.equal(result.innerText(), 'feature/QINR-2067-Price-Breakdown-for-Extensions');
+        assert.equal(result.outerText(), '<name>feature/QINR-2067-Price-Breakdown-for-Extensions</name>');
+    });
+
+    it('should return original text when match nothing', function () {
+        var result = easyTextMatch(sampleText)
+            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
+            .between('no.such.text')
+            .between('<name>', '</name>')
+        assert.equal(result.success, false);
+        var newText = result.replaceInnerTextWith('feature/QINR-2067-Price-Breakdown-for-Extensions');
+        assert.equal(newText, sampleText);
+        assert.equal(result.innerText(), sampleText);
+        assert.equal(result.outerText(), sampleText);
     });
 });
 
-describe('#replaceOuterTextWith() ', function () {
+describe('#replaceOuterTextWith()', function () {
     it('should replace outer text with specified text', function () {
-        var newText = match(text)
+        var newText = easyTextMatch(sampleText)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('qin.supplierportal')
             .between('<name>', '</name>')
             .replaceOuterTextWith('<name>feature/QINR-2067-Price-Breakdown-for-Extensions</name>');
-        var result = match(newText)
+        var result = easyTextMatch(newText)
             .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
             .between('qin.supplierportal')
             .between('<name>', '</name>');
-        assert.equal(result.innerText, 'feature/QINR-2067-Price-Breakdown-for-Extensions');
-        assert.equal(result.outerText, '<name>feature/QINR-2067-Price-Breakdown-for-Extensions</name>');
+        assert.equal(result.innerText(), 'feature/QINR-2067-Price-Breakdown-for-Extensions');
+        assert.equal(result.outerText(), '<name>feature/QINR-2067-Price-Breakdown-for-Extensions</name>');
+    });
+
+    it('should return original text when match nothing', function () {
+        var result = easyTextMatch(sampleText)
+            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
+            .between('no.such.text')
+            .between('<name>', '</name>')
+        assert.equal(result.success, false);
+        var newText = result.replaceOuterTextWith('feature/QINR-2067-Price-Breakdown-for-Extensions');
+        assert.equal(newText, sampleText);
+        assert.equal(result.innerText(), sampleText);
+        assert.equal(result.outerText(), sampleText);
     });
 });
 
