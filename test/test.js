@@ -63,6 +63,23 @@ describe('#innerText() & #outerText()', function () {
     });
 });
 
+describe('#leftText() & #rightText()', function () {
+    it('should return correct leftText', function () {
+        var result = easyTextMatch(sampleText)
+            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
+            .between('qin.backoffice.git')
+        assert.equal(result.success(), true);
+        assert.equal(result.leftText(9), 'wwtchina/');
+    });
+    it('should return correct rightText', function () {
+        var result = easyTextMatch(sampleText)
+            .between('<hudson.plugins.git.GitSCM', '</hudson.plugins.git.GitSCM>')
+            .between('UserRemoteConfig', 'qin.backoffice.git')
+        assert.equal(result.success(), true);
+        assert.equal(result.rightText(6), '</url>');
+    });
+});
+
 describe('#replaceInnerTextWith()', function () {
     it('should replace inner text with specified text', function () {
         var newText = easyTextMatch(sampleText)

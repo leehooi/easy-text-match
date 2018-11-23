@@ -4,6 +4,8 @@ function createRange(left, right, padLeft, padRight, findBetween, replaceBetween
         right: () => right,
         innerText: () => findBetween(left + padLeft, right - padRight),
         outerText: () => findBetween(left, right),
+        leftText: (len) => findBetween(left - (len || 0), left),
+        rightText: (len) => findBetween(right, right + (len || 0)),
         replaceInnerTextWith: (newText) => replaceBetween(left + padLeft, right - padRight, newText),
         replaceOuterTextWith: (newText) => replaceBetween(left, right, newText)
     };
@@ -54,6 +56,8 @@ function fillResult(result, rangeArray, emptyRange) {
     var range = rangeArray[0] || emptyRange;
     result.left = () => range.left();
     result.right = () => range.right();
+    result.leftText = (len) => range.leftText(len);
+    result.rightText = (len) => range.rightText(len);
     result.innerText = () => range.innerText();
     result.outerText = () => range.outerText();
     result.replaceInnerTextWith = (newText) => range.replaceInnerTextWith(newText);
