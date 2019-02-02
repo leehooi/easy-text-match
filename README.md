@@ -28,12 +28,12 @@ Pass in full text that you want to search in, and it returns `RangeArray` as res
 ### `RangeArray`
 It extends javascript array, with elements of `Range` objects.
 
-It also has the behalf of the first `Range` element in array. 
+It also has the behalf of the first `Range` element in array. This means `result.innerText()` is equal to `result[0].innerText()`, and so does other method in `Range`.
 
 Besides, it has a `success()` method to identify if there are any elements in array.
 
 ### `Range`
-A `Range` means a matched text paragraph.
+A `Range` means a matched text paragraph. It has following methods:
 #### `innerText()`
 Get matched text exclude prefix-text and suffix-text.
 * Returns: *\<string>* The matched text.
