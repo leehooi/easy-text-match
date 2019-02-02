@@ -13,7 +13,7 @@ Search all text by specify prefix-text and(or) suffix-text.
 ```js
 var easyTextMatch = require('easy-text-match')
 
-var result = easyTextMatch('sampleText')
+var result = easyTextMatch('the text you want to search in')
     .between('prefix-text', 'suffix-text');
 
 if (result.success()) {
@@ -33,22 +33,30 @@ It also has the behalf of the first `Range` element in array.
 Besides, it has a `success()` method to identify if there are any elements in array.
 
 ### `Range`
-A `Range` means a matched text 
+A `Range` means a matched text paragraph.
 #### `innerText()`
-* Returns: *\<string>*
+Get matched text exclude prefix-text and suffix-text.
+* Returns: *\<string>* The matched text.
 #### `outerText()`
-* Returns: *\<string>*
+Get matched text include prefix-text and suffix-text.
+* Returns: *\<string>* The matched text.
 #### `replaceInnerTextWith(newText)`
-* `newText` *\<string>*
-* Returns: *\<string>*
+Replece matched text(exclude prefix-text and suffix-text) with specified text.
+* `newText` *\<string>* The new text.
+* Returns: *\<string>* The whole text after replaced.
 #### `replaceOuterTextWith(newText)`
-* `newText` *\<string>*
-* Returns: *\<string>*
+Replece matched text(include prefix-text and suffix-text) with specified text.
+* `newText` *\<string>* The new text.
+* Returns: *\<string>* The whole text after replaced.
 #### `leftText(len)`
-* `len` *\<integer>*
-* Returns: *\<string>*
+Get the text at the beginning of matched text(include prefix-text and suffix-text).
+* `len` *\<integer>* The length of the text at the beginning.
+* Returns: *\<string>* The text at the beginning.
 #### `rightText(len)`
-* `len` *\<integer>*
-* Returns: *\<string>*
-#### `between()`
-* Returns: *\<RangeArray>*
+Get the text at the end of matched text(include prefix-text and suffix-text).
+* `len` *\<integer>* The length of the text at the end.
+* Returns: *\<string>* The text at the end.
+#### `between(prefixText, suffixText)`
+* `prefixText` *\<string>* The prefix-text used to search.
+* `suffixText` *\<string>* The suffix-text used to search.
+* Returns: *\<RangeArray>* Matched result.
